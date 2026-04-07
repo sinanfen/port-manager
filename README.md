@@ -1,38 +1,115 @@
 # PortManager
 
-PortManager is a Windows-first desktop app for inspecting active localhost ports, matching them to processes, and managing developer-facing local services from one place.
+PortManager is a Windows-first desktop app for inspecting active localhost ports, matching them to running processes, and taking common local-service actions without bouncing between terminals, Task Manager, and browser tabs.
 
-## Current milestone
+It is built with Tauri v2, Rust, React, and TypeScript, and is currently focused on a polished MVP for local development workflows on Windows.
 
-This repository currently implements the initial vertical MVP:
+## What it does
 
-- Tauri v2 desktop shell
-- React + TypeScript frontend
-- Rust-based TCP port discovery
-- Best-effort process metadata lookup
-- Search, filtering, sorting, and manual refresh
+- Scans active local TCP ports
+- Matches ports to running processes and PIDs
+- Shows best-effort process metadata such as executable path
+- Supports search, filtering, sorting, and manual refresh
+- Lets you open the detected service in a browser
+- Lets you open the process folder or a terminal in the process directory
+- Supports `taskkill` with confirmation before terminating a process
+- Runs as a desktop utility with a tray icon and tray menu
 
-## Stack
+## Screenshots
 
-- Tauri v2
-- Rust
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
-- Zustand
-- TanStack Query
-- Vitest
+### Main window
 
-## Local development
+![PortManager overview](docs/images/portmanager-overview.png)
 
-1. Install dependencies with `npm install`.
-2. Run the web UI with `npm run dev`.
-3. Run the desktop app with `npm run tauri:dev`.
-4. Run checks with `npm run lint`, `npm run typecheck`, `npm run test:run`, and `cargo test --manifest-path src-tauri/Cargo.toml`.
+### Row actions menu
+
+![PortManager actions menu](docs/images/portmanager-actions-menu.png)
+
+### Kill confirmation
+
+![PortManager kill confirmation](docs/images/portmanager-kill-dialog.png)
+
+## Installation
+
+### Option 1: Run from source
+
+PortManager is currently easiest to use by running it from source.
+
+#### Requirements
+
+- Windows 10 or Windows 11
+- [Node.js](https://nodejs.org/) 20+ with `npm`
+- [Rust](https://www.rust-lang.org/tools/install)
+- Microsoft Visual Studio Build Tools with C++ support for Tauri/Rust builds
+- WebView2 Runtime installed on Windows
+
+#### Steps
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/your-username/port-manager.git
+cd port-manager
+```
+
+2. Install frontend dependencies:
+
+```bash
+npm install
+```
+
+3. Start the desktop app in development mode:
+
+```bash
+npm run tauri:dev
+```
+
+### Option 2: Build a local executable
+
+If you want a local production build on your own machine:
+
+```bash
+npm install
+npm run tauri:build
+```
+
+The built Windows executable will be created at:
+
+```text
+src-tauri/target/release/port-manager.exe
+```
+
+## Development
+
+Useful commands:
+
+```bash
+npm run typecheck
+npm run lint
+npm run test:run
+cargo test --manifest-path src-tauri/Cargo.toml
+```
+
+## Current status
+
+PortManager is already runnable and manually testable, but it is still an in-progress MVP.
+
+Current focus:
+
+- Windows-first support
+- Local desktop workflow
+- Core port discovery and process actions
+
+Still planned:
+
+- settings screen
+- startup options
+- CLI support
+- deeper WSL and Docker support
+- broader release polish
 
 ## Notes
 
-- The first implementation pass is Windows only.
-- UI actions, tray behavior, CLI support, updater, packaging polish, WSL enrichment, and Docker enrichment are intentionally deferred.
-
+- Windows is the primary target right now.
+- Process metadata is best-effort; some protected processes may expose only partial information.
+- Some actions may require elevated permissions depending on the target process.
