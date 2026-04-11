@@ -17,3 +17,4 @@
 - The current UI is intentionally read-only: inspection first, actions later.
 - A native Tauri tray icon is created at startup with close-to-tray behavior and a right-click utility menu.
 - Tray menu actions are bridged back into the frontend with a Tauri app event for scan refresh.
+- Windows packaging is now configured around Tauri MSI bundles and a GitHub Actions release workflow that publishes tagged builds to GitHub Releases.

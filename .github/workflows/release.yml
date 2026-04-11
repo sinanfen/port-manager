@@ -1,0 +1,59 @@
+name: publish-windows-release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust artifacts
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri -> target
+
+      - name: Run frontend checks
+        run: |
+          npm run typecheck
+          npm run lint
+          npm run test:run
+
+      - name: Run Rust tests
+        run: cargo test --manifest-path src-tauri/Cargo.toml
+
+      - name: Build and publish MSI
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: PortManager ${{ github.ref_name }}
+          releaseBody: |
+            Windows MSI installer for PortManager ${{ github.ref_name }}.
+
+            Download the attached `.msi` asset from this release to install PortManager.
+          releaseDraft: false
+          prerelease: false
+          args: --bundles msi
+          uploadWorkflowArtifacts: true

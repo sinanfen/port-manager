@@ -31,6 +31,14 @@ It is built with Tauri v2, Rust, React, and TypeScript, and is currently focused
 
 ## Installation
 
+### Option 0: Download from GitHub Releases
+
+Once a tagged release is published, Windows users can download the installer directly from:
+
+https://github.com/sinanfen/port-manager/releases
+
+The GitHub release will include an `.msi` installer asset for direct installation on Windows.
+
 ### Option 1: Run from source
 
 PortManager is currently easiest to use by running it from source.
@@ -107,6 +115,26 @@ Still planned:
 - CLI support
 - deeper WSL and Docker support
 - broader release polish
+
+## Publishing a release
+
+This repository is now configured to publish a Windows MSI to GitHub Releases via GitHub Actions.
+
+Release flow:
+
+1. Make sure the app version is updated consistently in:
+   - `package.json`
+   - `src-tauri/Cargo.toml`
+   - `src-tauri/tauri.conf.json`
+2. Commit and push your changes to GitHub.
+3. Create and push a version tag such as:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+4. GitHub Actions will build the app on Windows, create the MSI, and publish it under the repository’s Releases section.
 
 ## Notes
 

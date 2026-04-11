@@ -9,6 +9,22 @@
     "devUrl": "http://127.0.0.1:1420",
     "frontendDist": "../dist"
   },
+  "bundle": {
+    "active": true,
+    "targets": "msi",
+    "publisher": "Sinan Fen",
+    "shortDescription": "Inspect localhost ports and manage local services on Windows.",
+    "longDescription": "PortManager is a Windows-first desktop app for scanning active localhost ports, matching them to running processes, and taking common local-service actions from one desktop utility.",
+    "icon": [
+      "icons/icon.ico",
+      "icons/icon.png"
+    ],
+    "windows": {
+      "wix": {
+        "language": "en-US"
+      }
+    }
+  },
   "app": {
     "windows": [
       {
